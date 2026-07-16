@@ -109,11 +109,25 @@ describe("API bancaria (E2E contra el stack completo)", () => {
     expect(Number(cOrigen.body.balance)).toBe(7500);
   });
 
-  test.todo(
-    "una consulta a una cuenta inexistente responde con codigo 404"
-  );
+  test("una consulta a una cuenta inexistente responde con codigo 404", async () => {
+    // Realiza una petición directa por HTTP (fetch) a un ID que no existe
+    const res = await api("/accounts/9999");
+    expect(res.status).toBe(404);
+  });
 
-  test.todo(
-    "un retiro por encima del saldo disponible responde con codigo 422 y no altera el saldo"
-  );
+  test("un retiro por encima del saldo disponible responde con codigo 422 y no altera el saldo", async () => {
+    const id = await nuevaCuenta("ClienteE2E", 5000); // 5000 céntimos (50.00)
+
+    // Intentamos retirar 6000 céntimos (60.00), lo cual excede el saldo de 5000
+    const res = await api(`/accounts/${id}/withdraw`, {
+      method: "POST",
+      body: JSON.stringify({ amountCents: 6000 })
+    });
+
+    expect(res.status).toBe(422);
+
+    // Verificamos que el saldo siga intacto en 5000 céntimos
+    const consulta = await api(`/accounts/${id}`);
+    expect(Number(consulta.body.balance)).toBe(5000);
+  });
 });
