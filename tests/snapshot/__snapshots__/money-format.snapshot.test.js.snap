@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot testing (formato y estructuras de salida) capturar el snapshot de buildTransferReceipt para un monto con tres cifras de céntimos redondeadas 1`] = `
+{
+  "amount": "PEN 355.05",
+  "receiptId": undefined,
+  "reference": "TRANSF-99",
+  "summary": "Gabriel -> Daniela",
+}
+`;
+
+exports[`Snapshot testing (formato y estructuras de salida) capturar el snapshot del cuerpo de respuesta de POST /accounts usando property matchers para id y created_at 1`] = `
+{
+  "balance": "0",
+  "created_at": Any<String>,
+  "currency": "PEN",
+  "id": Any<Number>,
+  "owner": "Gabriel Alonzo",
+  "status": "active",
+}
+`;
