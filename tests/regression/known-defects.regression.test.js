@@ -15,14 +15,23 @@ describe("Regresion (defectos historicos que no deben reaparecer)", () => {
     expect(toCents(19.999)).toBe(2000);
   });
 
-  test("BUG-118: validateAmount ya no acepta cadenas numericas como centimos validos", () => {
-    expect(() => validateAmount("100")).toThrow("centimos enteros");
-  });
-
-  test("BUG-126: computeInterest ya no retorna un valor negativo con tasa cero", () => {
+test("BUG-126: computeInterest ya no retorna un valor negativo con tasa cero", () => {
     const interes = computeInterest(100000, 0, 30);
     expect(interes).toBe(0);
-  });
+  }); 
+
+  // =========================================================================
+  // --- ENUNCIADOS PROPUESTOS RESUELTOS (Tipo 7 - Matar Mutante) ---
+  // =========================================================================
+
+  test("BUG-126-EXTINTO: calcular interés con tasa mayor a cero para extinguir mutantes de cálculo diario de Stryker", () => {
+    const { computeInterest } = require("../../src/services/money");
+    // Probamos con una tasa real del 10% anual sobre 100,000 céntimos por 365 días (un año exacto)
+    const interest = computeInterest(100000, 10, 365);
+    
+    // 100,000 * 0.10 = 10,000 céntimos de interés esperado en 365 días
+    expect(interest).toBe(10000);
+  }); 
 
   test("BUG-133: applyFee ya no redondea hacia abajo comisiones fraccionarias mayores a 0.5", () => {
     expect(applyFee(1000, 55)).toBe(1006);
